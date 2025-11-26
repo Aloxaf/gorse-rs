@@ -163,6 +163,16 @@ impl Gorse {
             .await;
     }
 
+    pub async fn upsert_feedback(&self, feedback: &Vec<Feedback>) -> Result<RowAffected> {
+        return self
+            .request(
+                Method::PUT,
+                format!("{}api/feedback", self.entry_point),
+                feedback,
+            )
+            .await;
+    }
+
     pub async fn delete_feedback(&self, user_id: &str, item_id: &str) -> Result<RowAffected> {
         return self
             .request::<(), RowAffected>(
@@ -457,6 +467,14 @@ pub mod blocking {
         pub fn insert_feedback(&self, feedback: &Vec<Feedback>) -> Result<RowAffected> {
             return self.request(
                 Method::POST,
+                format!("{}api/feedback", self.entry_point),
+                feedback,
+            );
+        }
+
+        pub fn upsert_feedback(&self, feedback: &Vec<Feedback>) -> Result<RowAffected> {
+            return self.request(
+                Method::PUT,
                 format!("{}api/feedback", self.entry_point),
                 feedback,
             );
